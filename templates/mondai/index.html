@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load i18n static %}
+
+{% block body %}
+<div class="sub-navi pcNone">
+  <div class="subnavi">
+    <a href="/puzzle">
+      Cindyに戻る
+    </a>
+  </div>
+  <div class="subnavi2">
+    問題一覧
+  </div>
+  <!--
+  <div class="subnavi">
+    <a href="/mondai/add">
+      出題する
+    </a>
+  </div>
+  <div class="subnavi">
+    <a href="/mondai/tag_search">
+      タグ一覧
+    </a>
+  </div>
+  <div class="subnavi">
+    <a href="/mondai/temple">
+      みんなのブックマーク
+    </a>
+  </div>
+  -->
+  <div class="clear"></div>
+</div>
+
+<div id="content">
+  <!--
+  <div class="pagi-auto">
+    <div class="pagination">
+      <span class="pagi2" class="prev">最初</span>
+      <span class="pagi" class="current">1</span>
+      <span class="pagi"><a href="/mondai/index/page:2/sort:Mondai.seikai/direction:asc">2</a></span>
+      <span class="pagi"><a href="/mondai/index/page:3/sort:Mondai.seikai/direction:asc">3</a></span>
+      <span class="pagi"><a href="/mondai/index/page:4/sort:Mondai.seikai/direction:asc">4</a></span>
+      <span class="pagi"><a href="/mondai/index/page:5/sort:Mondai.seikai/direction:asc">5</a></span>
+      <span class="pagi"><a href="/mondai/index/page:6/sort:Mondai.seikai/direction:asc">6</a></span>
+      <span class="pagi"><a href="/mondai/index/page:7/sort:Mondai.seikai/direction:asc">7</a></span>
+      <span class="pagi"><a href="/mondai/index/page:8/sort:Mondai.seikai/direction:asc">8</a></span>
+      <span class="pagi"><a href="/mondai/index/page:9/sort:Mondai.seikai/direction:asc">9</a></span>
+      <span class="pagi"><a href="/mondai/index/page:10/sort:Mondai.seikai/direction:asc">10</a></span>
+      <span class="pagi2" class="next"><a href="/mondai/index/page:2/sort:Mondai.seikai/direction:asc" rel="next">次＞＞</a></span>
+      <span class="pagi2"><a href="/mondai/index/page:16/sort:Mondai.seikai/direction:asc" rel="last">最後</a></span>
+    </div>
+    <div id="mondai-pagination" class="pagination">
+      <div class="sort"><b>総問題数：306問</b></div>
+      <div class="clear"></div>
+    </div>
+  </div>
+  <div class="clear"></div>
+  -->
+
+  (<img src="{% static 'img/kaisuu.png' %}" class="list-icon" alt=""/>質問数制限)
+　(<img src="{% static 'img/zikan.png' %}" class="list-icon" alt=""/>時間制限)
+　(<img src="{% static 'img/yami.png' %}" class="list-icon" alt=""/>闇スープ)
+　(<img src="{% static 'img/nanashi.png' %}" class="list-icon" alt=""/>名無し出題)
+　(<img src="{% static 'img/sashie.png' %}" class="list-icon" alt=""/>挿絵あり)
+
+<div class="black-bar margin_b10"><h1>未解決問題</h1></div>
+
+<table class="mondai_table">
+  {% for mondai in unsolved_puzzles %}
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        {% if mondai.genre == 0 %}
+        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+        {% elif mondai.genre == 1 %}
+        <img src="{% static 'img/genre20.png' %}" class="img-responsive" alt=""/>
+        {% elif mondai.genre == 2 %}
+        <img src="{% static 'img/genrekame.png' %}" class="img-responsive" alt=""/>
+        {% elif mondai.genre == 3 %}
+        <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
+        {% endif %}
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/profile/show/{{ mondai.user.id }}'>
+              {{ mondai.user.nickname }}</a>
+          </b>
+          [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
+          {{ mondai.created }}</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/{{ mondai.id }}'>
+              {{ mondai.title }}</a>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+      </div>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+<div class="black-bar  margin_b10">
+  <h1>
+    解決済みの問題</h1>
+</div>
+<table class="mondai_table">
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/mondai/profile/41'>
+              アザゼル</a>
+          </b>
+          [質問40]　18年06月14日05時</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/278'>
+              俺の命で仲間を逃がす！</a>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+
+        <div class="list-hitokoto">
+          <Font Color="#787878">
+            [　]</Font>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/mondai/profile/26'>
+              コウCHA</a>
+          </b>
+          [質問26]　18年06月16日00時</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/307'>
+              バス嫌いな社畜</a>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+
+        <div class="list-hitokoto">
+          <Font Color="#787878">
+            [少し知識が必要かも？後出しで申し訳ございません。。]</Font>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/mondai/profile/177'>
+              まっしろ</a>
+          </b>
+          [質問38][1日]　18年06月15日00時</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/297'>
+              鍋パーティーでもしましょうか？　Part7</a>
+          </div>
+          <img src="{% static 'img/zikan.png' %}" class="list-icon" alt=""/>
+          <img src="{% static 'img/yami.png' %}" class="list-icon" alt=""/>
+        </div>
+        <div class="clear">
+        </div>
+
+        <div class="list-hitokoto">
+          <Font Color="#787878">
+            [蟹「おい、普通にウミガメしろよ」残り三十分を切りました！乱数ソフト準備中……(*^-^)ヘ＿/]</Font>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/mondai/profile/54'>
+              かんたた</a>
+          </b>
+          [質問13]　18年06月15日12時</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/302'>
+              覆面・半裸仲間の優等生！</a>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+
+        <div class="list-hitokoto">
+          <Font Color="#787878">
+            [召しませ！300！]</Font>
+        </div>
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <div class="list-others2 margin_r">
+        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+      </div>
+      <div class="list-left">
+        <div class="list-others">
+          <b>
+            <a href='/mondai/profile/148'>
+              灰色ヤタガラス</a>
+          </b>
+          [質問14]　18年06月15日21時</div>
+        <div class="l">
+          <div class="list-title">
+            <a href='/mondai/show/306'>
+              RPGっぽい死体</a>
+          </div>
+        </div>
+        <div class="clear">
+        </div>
+        <div class="list-hitokoto">
+          <Font Color="#787878">
+            [100000000ブクマ]</Font>
+          <Font Color="#787878">
+            [1ﾌﾞｸﾏ]</Font>
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
+</div>
+{% endblock body %}
