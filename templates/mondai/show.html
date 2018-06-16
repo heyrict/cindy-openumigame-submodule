@@ -78,6 +78,8 @@
   </div>
   {% for union in union_list %}
   {% if union|isclass:'Dialogue' %}
+  {% if puzzle.yami and request.user != union.user and request.user != puzzle.user and puzzle.status == 0 %}
+  {% else %}
   <div class="situmon_wrap">
     <span class="name name-l">
       <b>No.{{ union.index }}</b>
@@ -144,6 +146,7 @@
       {% endif %}
     </div>
     <div class="clear"></div>
+    {% endif %}
     {% elif union|isclass:'Hint' %}
     <div class="border align_c margin_t30 line2md">
       {{ union.content }}
