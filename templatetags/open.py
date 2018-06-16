@@ -12,3 +12,8 @@ def get_page_list(paginator, current):
         return range(max_pagenum - 10, max_pagenum + 1)
     else:
         return range(current - 5, current + 6)
+
+
+@register.filter
+def isclass(obj, className):
+    return obj.__class__.__name__ == className

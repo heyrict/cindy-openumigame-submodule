@@ -1,8 +1,10 @@
+from itertools import chain
+
 from django.core.paginator import Paginator
 from django.db.models import Case, Count, When
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
-from sui_hei.models import Puzzle
+from sui_hei.models import ChatRoom, Dialogue, Hint, Puzzle
 
 # Create your views here.
 
@@ -24,3 +26,25 @@ def mondai(request, *args, **kwargs):
             'unsolved_puzzles': unsolved_puzzles,
             'solved_puzzles': paginated_solved_puzzles.page(page_num),
         })
+
+
+def mondai_show(request, *args, **kwargs):
+    puzzleId = kwargs.get('id')
+    if not puzzleId:
+        return redirect('/')
+
+    puzzle = Puzzle.objects.get(pk=puzzleId)
+    dialogue_list = Dialogue.objects.filter(
+        puzzle__exact=puzzle).order_by("id")
+    hint_list = Hint.objects.filter(puzzle__exact=puzzle)
+    chatroom = ChatRoom.objects.get(name="puzzle-%d" % puzzleId)
+
+    for i in range(len(dialogue_list)):
+        dialogue_list[i].index = i + 1
+
+    return render(
+        request, "mondai/show.html", {
+            "puzzle": puzzle,
+            "union_list": sorted(chain(dialogue_list, hint_list), key=lambda x: x.created),
+            "chatroom": chatroom,
+        }) # yapf: disable

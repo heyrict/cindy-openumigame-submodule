@@ -6,4 +6,5 @@ app_name = "open"
 
 contentpatterns = [
     path("mondai", views.mondai, name="mondai"),
+    path("mondai/show/<int:id>", views.mondai_show, name="mondai_show"),
 ] # yapf: disable

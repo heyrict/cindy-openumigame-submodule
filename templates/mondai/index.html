@@ -43,107 +43,109 @@
   　(<img src="{% static 'img/sashie.png' %}" class="list-icon" alt=""/>挿絵あり)
   -->
 
-<div class="black-bar margin_b10"><h1>未解決問題</h1></div>
+  <div class="black-bar margin_b10"><h1>未解決問題</h1></div>
 
-<table class="mondai_table">
-  {% for mondai in unsolved_puzzles %}
-  <tr>
-    <td>
-      <div class="list-others2 margin_r">
-        {% if mondai.genre == 0 %}
-        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 1 %}
-        <img src="{% static 'img/genre20.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 2 %}
-        <img src="{% static 'img/genrekame.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 3 %}
-        <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
-        {% endif %}
-      </div>
-      <div class="list-left">
-        <div class="list-others">
-          <b>
-            <a href='/profile/show/{{ mondai.user.id }}'>
-              {{ mondai.user.nickname }}</a>
-          </b>
-          [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
-          {{ mondai.created }}</div>
-        <div class="l">
-          <div class="list-title">
-            <a href='/mondai/show/{{ mondai.id }}'>
-              {{ mondai.title }}
-            </a>
-          </div>
-          {% if mondai.yami %}
-          <img src="{% static 'img/yami.png' %}" class="list-icon" alt=""/>
+  <table class="mondai_table">
+    {% for mondai in unsolved_puzzles %}
+    <tr>
+      <td>
+        <div class="list-others2 margin_r">
+          {% if mondai.genre == 0 %}
+          <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 1 %}
+          <img src="{% static 'img/genre20.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 2 %}
+          <img src="{% static 'img/genrekame.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 3 %}
+          <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
           {% endif %}
         </div>
-        <div class="clear">
-        </div>
-      </div>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-<div class="black-bar  margin_b10">
-  <h1>
-    解決済みの問題</h1>
-</div>
-<table class="mondai_table">
-  {% for mondai in solved_puzzles.object_list %}
-  <tr>
-    <td>
-      <div class="list-others2 margin_r">
-        {% if mondai.genre == 0 %}
-        <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 1 %}
-        <img src="{% static 'img/genre20.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 2 %}
-        <img src="{% static 'img/genrekame.png' %}" class="img-responsive" alt=""/>
-        {% elif mondai.genre == 3 %}
-        <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
-        {% endif %}
-      </div>
-      <div class="list-left">
-        <div class="list-others">
-          <b>
-            <a href='/profile/show/{{ mondai.user.id }}'>
-              {{ mondai.user.nickname }}</a>
-          </b>
-          [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
-          {{ mondai.created }}</div>
-        <div class="l">
-          <div class="list-title">
-            <a href='/mondai/show/{{ mondai.id }}'>
-              {{ mondai.title }}</a>
+        <div class="list-left">
+          <div class="list-others">
+            <b>
+              <a href='/profile/show/{{ mondai.user.id }}'>
+                {{ mondai.user.nickname }}</a>
+            </b>
+            [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
+            {{ mondai.created }}</div>
+          <div class="l">
+            <div class="list-title">
+              <a href='/mondai/show/{{ mondai.id }}'>
+                {{ mondai.title }}
+              </a>
+            </div>
+            {% if mondai.yami %}
+            <img src="{% static 'img/yami.png' %}" class="list-icon" alt=""/>
+            {% endif %}
+          </div>
+          <div class="clear">
           </div>
         </div>
-        <div class="clear">
-        </div>
-      </div>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-
-<div class="pagi-auto">
-  <div class="pagination">
-    <span class="pagi2" class="prev"><a href="?page=1">最初</a></span>
-    {% if solved_puzzles.has_previous %}
-    <span class="pagi2" class="prev"><a href="?page={{ solved_puzzles.previous_page_number }}" rel="prev">＜＜前</a></span>
-    {% endif %}
-    {% for i in solved_puzzles.paginator|get_page_list:solved_puzzles.number %}
-    <span class="pagi" >{% if solved_puzzles.number == i %}{{ i }}{% else %}<a href="?page={{ i }}">{{ i }}</a>{% endif %}</span>
+      </td>
+    </tr>
     {% endfor %}
-    {% if solved_puzzles.has_next %}
-    <span class="pagi2" class="next"><a href="?page={{ solved_puzzles.next_page_number }}" rel="next">次＞＞</a></span>
-    {% endif %}
-    <span class="pagi2" class="next"><a href="?page={{ solved_puzzles.paginator.num_pages }}">最後</a></span>
+  </table>
+  <div class="black-bar  margin_b10">
+    <h1>
+      解決済みの問題</h1>
   </div>
-  <div id="mondai-pagination" class="pagination">
-    <div class="sort"><b>総問題数：306問</b></div>
+  <table class="mondai_table">
+    {% for mondai in solved_puzzles.object_list %}
+    <tr>
+      <td>
+        <div class="list-others2 margin_r">
+          {% if mondai.genre == 0 %}
+          <img src="{% static 'img/genreumi.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 1 %}
+          <img src="{% static 'img/genre20.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 2 %}
+          <img src="{% static 'img/genrekame.png' %}" class="img-responsive" alt=""/>
+          {% elif mondai.genre == 3 %}
+          <img src="{% static 'img/genresin.png' %}" class="img-responsive" alt=""/>
+          {% endif %}
+        </div>
+        <div class="list-left">
+          <div class="list-others">
+            <b>
+              <a href='/profile/show/{{ mondai.user.id }}'>
+                {{ mondai.user.nickname }}</a>
+            </b>
+            [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
+            {{ mondai.created }}</div>
+          <div class="l">
+            <div class="list-title">
+              <a href='/mondai/show/{{ mondai.id }}'>
+                {{ mondai.title }}</a>
+            </div>
+          </div>
+          <div class="clear">
+          </div>
+        </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <div class="pagi-auto">
+    <div class="pagination">
+      <span class="pagi2" class="prev"><a href="?page=1">最初</a></span>
+      {% if solved_puzzles.has_previous %}
+      <span class="pagi2" class="prev"><a href="?page={{ solved_puzzles.previous_page_number }}" rel="prev">＜＜前</a></span>
+      {% endif %}
+      {% for i in solved_puzzles.paginator|get_page_list:solved_puzzles.number %}
+      <span class="pagi" >{% if solved_puzzles.number == i %}{{ i }}{% else %}<a href="?page={{ i }}">{{ i }}</a>{% endif %}</span>
+      {% endfor %}
+      {% if solved_puzzles.has_next %}
+      <span class="pagi2" class="next"><a href="?page={{ solved_puzzles.next_page_number }}" rel="next">次＞＞</a></span>
+      {% endif %}
+      <span class="pagi2" class="next"><a href="?page={{ solved_puzzles.paginator.num_pages }}">最後</a></span>
+    </div>
+    <div id="mondai-pagination" class="pagination">
+      <div class="sort"><b>総問題数：306問</b></div>
+      <div class="clear"></div>
+    </div>
     <div class="clear"></div>
   </div>
-  <div class="clear"></div>
 </div>
+
 {% endblock body %}
