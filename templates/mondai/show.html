@@ -9,240 +9,249 @@
     </a>
   </div>
   <div class="subnavi">
-    <a href="/mondai">
+    <a href="{% url 'open:mondai' %}">
       問題一覧
     </a>
   </div>
-  <!--
   <div class="subnavi">
-    <a href="/mondai/add">
+    <a href="/puzzle/add">
       出題する
     </a>
   </div>
-  <div class="subnavi">
+  <!--
+    <div class="subnavi">
     <a href="/mondai/tag_search">
-      タグ一覧
+    タグ一覧
     </a>
-  </div>
-  <div class="subnavi">
+    </div>
+    <div class="subnavi">
     <a href="/mondai/temple">
-      みんなのブックマーク
+    みんなのブックマーク
     </a>
-  </div>
+    </div>
   -->
   <div class="clear"></div>
 </div>
 
 <div id="content">
-  <div class="black-bar">
-    <h1>
-      {% if puzzle.genre == 0 %}
-      【ウミガメのスープ】
-      {% elif puzzle.genre == 1 %}
-      【２０の扉】
-      {% elif puzzle.genre == 2 %}
-      【亀夫君問題】
-      {% elif puzzle.genre == 3 %}
-      【新＆形式】
-      {% endif %}
-      「 {{ puzzle.title }} 」</h1>
-  </div>
-  <div class="box">
-    <div class="text2md" id="cindy_mondai_block">
-      {{ puzzle.content }}
-    </div>
-    <div class="r align_r font14">
-      {{ puzzle.created }}
-      <br />
-      {% if puzzle.genre == 0 %}
-      【ウミガメのスープ】
-      {% elif puzzle.genre == 1 %}
-      【２０の扉】
-      {% elif puzzle.genre == 2 %}
-      【亀夫君問題】
-      {% elif puzzle.genre == 3 %}
-      【新＆形式】
-      {% endif %}
-      <b>[<a href="/profile/show/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
-    </div>
-    <div class="clear"></div>
-    <!--
-      <div class="hukidasi r hukidasi-hitokoto">
-      <div class="f-rh">
-      <img src="{% static 'img/f-rh.png' %}" class="img-responsive" alt=""></div>
-      <div class="hukidasi_box clearfix">
-      <p class="align_r">
-      <b>うちの母はこんなことしません。……しませんからね？</b></p></div>
-      </div>
-    -->
-  </div>
-  {% for union in union_list %}
-  {% if union|isclass:'Dialogue' %}
-  {% if puzzle.yami and request.user != union.user and request.user != puzzle.user and puzzle.status == 0 %}
-  {% else %}
-  <div class="situmon_wrap">
-    <span class="name name-l">
-      <b>No.{{ union.index }}</b>
-      [<a href="/profile/show/{{ union.user.id }}">{{ union.user.nickname }}</a>]{{ union.created }}</span>
-    <span class="name align_r name-r">
-      {% if union.answeredtime %}
-      {{ union.answeredtime }}
-      {% else %}
-      未回答
-      {% endif %}
-    </span>
-    <div class="clearfix">
-      <div class="mobile_clearfix">
-        <div class="hukidasi l">
-          <div class="f">
-            <img src="{% static 'img/f.png' %}" class="img-responsive" alt="">
-          </div>
-          <div class="hukidasi_box clearfix">
-            <p class="align_l">
-            <span class="line2md{% if union.good or union.true %} goodques{% endif %}">
-              {{ union.question }}
-            </span>  
-            {% if union.questionEditTimes >= 1 %}
-            <font color="#AC965A">[編集済({{ union.questionEditTimes }})]</font>
-            {% endif %}
-            </p>
-          </div>
-        </div>
-      </div>
-      {% if union.answer %}
-      <div class="mobile_clearfix">
-        <div class="hukidasi r hukidasi-r">
-          <div class="f-r">
-            <img src="{% static 'img/f-r.png' %}" class="img-responsive" alt="">
-          </div>
-          <div class="hukidasi_box clearfix">
-            <p class="align_l">
-            <span class="line2md{% if union.good or union.true %} goodques{% endif %}">
-              {{ union.answer }}
-            </span>
-            {% if union.good %}
-            <font color="#ff0000">[良い質問]</font>
-            {% elif union.true %}
-            <font color="#ff0000">[正解]</font>
-            {% endif %}
-            {% if union.answerEditTimes >= 1 %}
-            <font color="#AC965A">[編集済({{ union.answerEditTimes }})]</font>
-            {% endif %}
-            </p>
-          </div>
-        </div>
-      </div>
-      {% else %}
-      <div class="mobile_clearfix">
-        <div class="hukidasi r hukidasi-r">
-          <div class="f-r">
-            <img src="{% static 'img/f-r.png' %}" class="img-responsive" alt=""></div>
-          <div class="hukidasi_box clearfix">
-            <p class="align_l"><font color="#AC965A">回答はまだです。</font>
-            </p>
-          </div>
-        </div>
-      </div>
-      {% endif %}
-    </div>
-    <div class="clear"></div>
-    {% endif %}
-    {% elif union|isclass:'Hint' %}
-    <div class="border align_c margin_t30 line2md">
-      {{ union.content }}
-    </div>
-    {% endif %}
-    {% endfor %}
-  {% if puzzle.status == 1 or puzzle.status == 2 %}
-  <div class="box">
-    <div id="cindy_kaisetu_block" class="text2md">
-      {{ puzzle.solution }}
-    </div>
-    <div class="clear"></div>
-    <div class="r align_r font14">
-      {{ puzzle.modified }}
-      <b>[<a href="/profile/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
-    </div>
-    <div class="clear"></div>
-  </div>
-  {% else %}
-  <!--
-  <div class="border">
-    <form action="/mondai/show/295" id="MondaiShowForm" method="post" accept-charset="utf-8"><div style="display:none;"><input name="_method" value="POST" type="hidden"></div>
-      <input name="data[Resq][content]" size="40" class="form-text" placeholder="質問文を入力してください" id="ResqContent" required="required" type="text">
-      <div class="clear"></div>
-      <center><div class="submit"><input value="質問する" type="submit"></div></center>
-    </form>
-  </div>
-  -->
-  {% endif %}
-  <div id="myCwww"></div>
-  <div class="scroll small">
-    <table class="soudan_table">
-      <tbody>
-        <tr bgcolor="#D4BD81">
-          <th colspan="3" class="mondai">
-            相談チャットです。この問題に関する事を書き込みましょう。</th>
-        </tr>
-        {% for msg in chatroom.chatmessage_set.all %}
-        <tr>
-          <td>
-            <font color="#bfbfbf">
-              <a href="/profile/show/{{ msg.user.id }}">{{ msg.user.nickname }}</a>
-              {% if msg.user.current_award %}
-              <a class="degree">[{{ msg.user.current_award.award.name }}]</a>
-              {% endif %}
-              ＞＞
-            </font>
-            {{ msg.content }}
-            <font color="#bfbfbf">[{{ msg.created }}]</font>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-  <!--
-  <div class="border">
-    <form action="/mondai/./show/255" id="MondaiShowForm" method="post" accept-charset="utf-8">
-      <div style="display:none;">
-        <input name="_method" value="POST" type="hidden">
-      </div>
-      <input name="data[Soudan][content]" size="39" class="form-text" placeholder="相談チャット" id="SoudanContent" required="required" type="text">
-      <br>
-      <div class="clear">
-      </div>
-      <center>
-        <div class="submit">
-          <input value="発言" type="submit">
-        </div>
-      </center>
-    </form>
-  </div>
-  -->
-  <div class="clear">
-  </div>
+  {% if puzzle.status <= 2 %} {# 非公開 #}
+     {# 問題ボックス #}
+     <div class="black-bar">
+       <h1>
+         {% if puzzle.genre == 0 %}
+         【ウミガメのスープ】
+         {% elif puzzle.genre == 1 %}
+         【２０の扉】
+         {% elif puzzle.genre == 2 %}
+         【亀夫君問題】
+         {% elif puzzle.genre == 3 %}
+         【新＆形式】
+         {% endif %}
+         「 {{ puzzle.title }} 」</h1>
+     </div>
+     <div class="box">
+       <div class="text2md" id="cindy_mondai_block">
+         {{ puzzle.content }}
+       </div>
+       <div class="r align_r font14">
+         {{ puzzle.created }}
+         <br />
+         {% if puzzle.genre == 0 %}
+         【ウミガメのスープ】
+         {% elif puzzle.genre == 1 %}
+         【２０の扉】
+         {% elif puzzle.genre == 2 %}
+         【亀夫君問題】
+         {% elif puzzle.genre == 3 %}
+         【新＆形式】
+         {% endif %}
+         <b>[<a href="/profile/show/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
+       </div>
+       <div class="clear"></div>
+       <!--
+         <div class="hukidasi r hukidasi-hitokoto">
+         <div class="f-rh">
+         <img src="{% static 'img/f-rh.png' %}" class="img-responsive" alt=""></div>
+         <div class="hukidasi_box clearfix">
+         <p class="align_r">
+         <b>うちの母はこんなことしません。……しませんからね？</b></p></div>
+         </div>
+       -->
+     </div>
+     {# 質問・回答ボックス #}
+     <form action="{% url 'open:mondai_show_push_answ' puzzle.id %}" method="post">
+       {% csrf_token %}
+       {% for union in union_list %}
+       {% if union|isclass:'Dialogue' %}
+       {% if puzzle.yami and request.user != union.user and request.user != puzzle.user and puzzle.status == 0 %}
+       {% else %}
+       <div class="situmon_wrap">
+         <span class="name name-l">
+           <b>No.{{ union.index }}</b>
+           [<a href="/profile/show/{{ union.user.id }}">{{ union.user.nickname }}</a>]{{ union.created }}</span>
+         <span class="name align_r name-r">
+           {% if union.answeredtime %}
+           {{ union.answeredtime }}
+           {% else %}
+           未回答
+           {% endif %}
+         </span>
+         <div class="clearfix">
+           <div class="mobile_clearfix">
+             <div class="hukidasi l">
+               <div class="f">
+                 <img src="{% static 'img/f.png' %}" class="img-responsive" alt="">
+               </div>
+               <div class="hukidasi_box clearfix">
+                 <p class="align_l">
+                 <span class="line2md{% if union.good or union.true %} goodques{% endif %}">
+                   {{ union.question }}
+                 </span>  
+                 {% if union.questionEditTimes >= 1 %}
+                 <font color="#AC965A">[編集済({{ union.questionEditTimes }})]</font>
+                 {% endif %}
+                 </p>
+               </div>
+             </div>
+           </div>
+           <div class="mobile_clearfix">
+             <div class="hukidasi r hukidasi-r">
+               <div class="f-r">
+                 <img src="{% static 'img/f-r.png' %}" class="img-responsive" alt="">
+               </div>
+               <div class="hukidasi_box clearfix">
+                 <p class="align_l">
+                 {% if union.answer %} {# 回答済み #}
+                 <span class="line2md{% if union.good or union.true %} goodques{% endif %}">
+                   {{ union.answer }}
+                 </span>
+                 {% if union.good %}
+                 <font color="#ff0000">[良い質問]</font>
+                 {% elif union.true %}
+                 <font color="#ff0000">[正解]</font>
+                 {% endif %}
+                 {% if union.answerEditTimes >= 1 %}
+                 <font color="#AC965A">[編集済({{ union.answerEditTimes }})]</font>
+                 {% endif %}
+                 {% else %} {# 回答済み #}
+                 {% if request.user == puzzle.user %}
+                 <input type="text" name="push_answ_{{ union.id }}"></input>
+                 {% else %}
+                 <font color="#AC965A">回答はまだです。</font>
+                 {% endif %} {# 回答済み #}
+                 {% endif %}
+                 {% if request.user == puzzle.user %}
+                 {% if union.good %}
+                 <input type="checkbox" name="check_goodques_{{ union.id }}">良質解除</input>
+                 {% else %}
+                 <input type="checkbox" name="check_goodques_{{ union.id }}">良質表示</input>
+                 {% endif %}
+                 {% if union.true %}
+                 <input type="checkbox" name="check_trueansw_{{ union.id }}">正解解除</input>
+                 {% else %}
+                 <input type="checkbox" name="check_trueansw_{{ union.id }}">正解表示</input>
+                 {% endif %}
+                 {% endif %}
+                 </p>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+       <div class="clear"></div>
+       {% endif %}
+       {% elif union|isclass:'Hint' %}
+       <div class="border align_c margin_t30 line2md">
+         {{ union.content }}
+       </div>
+       {% endif %}
+       {% endfor %}
+       {% if request.user == puzzle.user %}
+       <input type="submit" class="submit" style="float:right" value="すべての質問に一括回答する"></input>
+       <div class="clear"></div>
+       {% endif %}
+     </form>
+     {# 質問入力ボックス #}
+     {% if puzzle.status == 0 %}
+     <div class="border">
+       <form action="{% url 'open:mondai_show_push_ques' id=puzzle.id %}" class="postForm" method="post">
+         {% csrf_token %}
+         <input class="form-text" name="push_ques" type="text" placeholder="質問文を入力してください" id=ResqContent" required="required">
+         <div class="clear"></div>
+         <input value="質問する" class="submit" type="submit">
+       </form>
+     </div>
+     {% else %}
+     {# 解説ボックス #}
+     <div class="box">
+       <div id="cindy_kaisetu_block" class="text2md">
+         {{ puzzle.solution }}
+       </div>
+       <div class="clear"></div>
+       <div class="r align_r font14">
+         {{ puzzle.modified }}
+         <b>[<a href="/profile/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
+       </div>
+       <div class="clear"></div>
+     </div>
+     {% endif %}
+     {% endif %}{# 非公開 #}
+     <div id="myCwww"></div>
+     <div class="scroll small">
+       <table class="soudan_table">
+         <tbody>
+           <tr bgcolor="#D4BD81">
+             <th colspan="3" class="mondai">
+               相談チャットです。この問題に関する事を書き込みましょう。</th>
+           </tr>
+           {% for msg in chatroom.chatmessage_set.all %}
+           <tr>
+             <td>
+               <font color="#bfbfbf">
+                 <a href="/profile/show/{{ msg.user.id }}">{{ msg.user.nickname }}</a>
+                 {% if msg.user.current_award %}
+                 <a class="degree">[{{ msg.user.current_award.award.name }}]</a>
+                 {% endif %}
+                 ＞＞
+               </font>
+               {{ msg.content }}
+               <font color="#bfbfbf">[{{ msg.created }}]</font>
+             </td>
+           </tr>
+           {% endfor %}
+         </tbody>
+       </table>
+     </div>
+     <div class="border">
+       <form action="{% url 'open:mondai_show_push_chatmessage' puzzle.id %}" class="postForm" method="post" accept-charset="utf-8">
+         {% csrf_token %}
+         <input name="push_chatmessage" size="39" class="form-text" placeholder="相談チャット" id="SoudanContent" required="required" type="text">
+         <input value="発言" type="submit" class="submit">
+       </form>
+     </div>
+     <div class="clear">
+     </div>
 
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sanitize-html@1.18.2/dist/sanitize-html.min.js"></script>
-  <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
-  <script type="text/javascript">
-    const puzzleContent = `{{ puzzle.content|safe }}`;
-    {% if puzzle.status == 1 or puzzle.status == 2 %}
-    const puzzleSolution = `{{ puzzle.solution|safe }}`;
-    {% else %}
-    const puzzleSolution = null;
-    {% endif %}
+     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
+     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/sanitize-html@1.18.2/dist/sanitize-html.min.js"></script>
+     <script type="text/javascript" src="{% static 'js/rendering.js' %}"></script>
+     <script type="text/javascript">
+       const puzzleContent = `{{ puzzle.content|safe }}`;
+       {% if puzzle.status == 1 or puzzle.status == 2 %}
+       const puzzleSolution = `{{ puzzle.solution|safe }}`;
+       {% else %}
+       const puzzleSolution = null;
+       {% endif %}
 
-    if (puzzleContent) {
-      $('#cindy_mondai_block').html(text2md(puzzleContent.trim()));
-    }
-    if (puzzleSolution) {
-      $('#cindy_kaisetu_block').html(text2md(puzzleSolution.trim()));
-    }
-    $('.line2md').each(function (index, inst) {
-      inst.innerHTML = line2md(inst.innerHTML.trim());
-    });
-  </script>
+       if (puzzleContent) {
+         $('#cindy_mondai_block').html(text2md(puzzleContent.trim()));
+       }
+       if (puzzleSolution) {
+         $('#cindy_kaisetu_block').html(text2md(puzzleSolution.trim()));
+       }
+       $('.line2md').each(function (index, inst) {
+         inst.innerHTML = line2md(inst.innerHTML.trim());
+       });
+     </script>
 </div>
 {% endblock body %}
