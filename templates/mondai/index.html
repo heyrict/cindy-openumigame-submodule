@@ -65,6 +65,9 @@
             <b>
               <a href='/profile/show/{{ mondai.user.id }}'>
                 {{ mondai.user.nickname }}</a>
+              {% if mondai.user.current_award %}
+              <a class="degree">[{{ mondai.user.current_award.award.name }}]</a>
+              {% endif %}
             </b>
             [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
             {{ mondai.created }}</div>
@@ -109,6 +112,9 @@
             <b>
               <a href='/profile/show/{{ mondai.user.id }}'>
                 {{ mondai.user.nickname }}</a>
+              {% if mondai.user.current_award %}
+              <a class="degree">[{{ mondai.user.current_award.award.name }}]</a>
+              {% endif %}
             </b>
             [質問{{ mondai.qcount }}{% if mondai.uaqcount %}<Font Color="#69623A">({{ mondai.uaqcount }})</Font>{% endif %}]
             {{ mondai.created }}</div>

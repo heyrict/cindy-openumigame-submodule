@@ -66,6 +66,9 @@
          【新＆形式】
          {% endif %}
          <b>[<a href="/profile/show/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
+         {% if puzzle.user.current_award %}
+         <a class="degree">[{{ puzzle.user.current_award.award.name }}]</a>
+         {% endif %}
        </div>
        <div class="clear"></div>
        <!--
@@ -88,7 +91,11 @@
        <div class="situmon_wrap">
          <span class="name name-l">
            <b>No.{{ union.index }}</b>
-           [<a href="/profile/show/{{ union.user.id }}">{{ union.user.nickname }}</a>]{{ union.created }}</span>
+           [<a href="/profile/show/{{ union.user.id }}">{{ union.user.nickname }}</a>]
+           {% if union.user.current_award %}
+           <a class="degree">[{{ union.user.current_award.award.name }}]</a>
+           {% endif %}
+           {{ union.created }}</span>
          <span class="name align_r name-r">
            {% if union.answeredtime %}
            {{ union.answeredtime }}
@@ -172,7 +179,8 @@
        {% endif %}
      </form>
      {# 質問入力ボックス #}
-     {% if puzzle.status == 0 %}
+     {% if puzzle.status == 0  %}
+     {% if request.user != puzzle.user %}
      <div class="border">
        <form action="{% url 'open:mondai_show_push_ques' id=puzzle.id %}" class="postForm" method="post">
          {% csrf_token %}
@@ -181,6 +189,7 @@
          <input value="質問する" class="submit" type="submit">
        </form>
      </div>
+     {% endif %}
      {% else %}
      {# 解説ボックス #}
      <div class="box">
@@ -191,19 +200,22 @@
        <div class="r align_r font14">
          {{ puzzle.modified }}
          <b>[<a href="/profile/{{ puzzle.user.id }}">{{ puzzle.user.nickname }}</a>]</b>
+         {% if puzzle.user.current_award %}
+         <a class="degree">[{{ puzzle.user.current_award.award.name }}]</a>
+         {% endif %}
        </div>
        <div class="clear"></div>
      </div>
      {% endif %}
      {% endif %}{# 非公開 #}
      <div id="myCwww"></div>
-     <div class="scroll small">
+     <div class="small" style="border:5px double #333">
+       <div style="background:#e5dfa7;font-size:1.1em;padding:5px;text-align:center;border:1px solid #333">
+           相談チャットです。この問題に関する事を書き込みましょう。
+       </div>
+       <div style="height:500px;overflow:auto">
        <table class="soudan_table">
          <tbody>
-           <tr bgcolor="#D4BD81">
-             <th colspan="3" class="mondai">
-               相談チャットです。この問題に関する事を書き込みましょう。</th>
-           </tr>
            {% for msg in chatroom.chatmessage_set.all %}
            <tr>
              <td>
@@ -221,6 +233,7 @@
            {% endfor %}
          </tbody>
        </table>
+       </div>
      </div>
      <div class="border">
        <form action="{% url 'open:mondai_show_push_chatmessage' puzzle.id %}" class="postForm" method="post" accept-charset="utf-8">
